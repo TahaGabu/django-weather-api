@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Skycast{% endblock %}</title>
+  <meta name="description" content="Skycast — Django weather app with OpenWeather API and AI advisor integration.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/weather.css' %}">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="{% url 'weather:home' %}">Skycast</a>
+    <nav>
+      <a href="{% url 'weather:api_weather' %}?city=London">API</a>
+      <a href="/admin/">Admin</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="foot">
+    <p class="footer-brand">Skycast</p>
+    <p>Portfolio demo · OpenWeatherMap · optional OpenAI advice endpoint</p>
+  </footer>
+  <script src="{% static 'js/weather.js' %}"></script>
+</body>
+</html>

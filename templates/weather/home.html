@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{% if weather %}{{ weather.city }} · {% endif %}Skycast{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <h1 class="hero-brand">Skycast</h1>
+  <p class="hero-lead">Live weather from OpenWeatherMap, plus an AI-style advisor wired for production.</p>
+
+  <form class="search" method="get" action="{% url 'weather:home' %}" role="search">
+    <label class="sr-only" for="city">City</label>
+    <input id="city" name="city" type="search" placeholder="Try Mumbai, London, Tokyo…" value="{{ city }}" required autofocus>
+    <button type="submit">Look up</button>
+  </form>
+  <p class="chip-row">
+    <a class="chip" href="?city=London">London</a>
+    <a class="chip" href="?city=Mumbai">Mumbai</a>
+    <a class="chip" href="?city=Tokyo">Tokyo</a>
+    <a class="chip" href="?city=New York">New York</a>
+  </p>
+</section>
+
+{% if error %}
+<p class="error-banner" role="alert">{{ error }}</p>
+{% endif %}
+
+{% if weather %}
+<section class="result" aria-live="polite">
+  <div class="now">
+    <div class="now-text">
+      <p class="place">{{ weather.city }}{% if weather.country %}, {{ weather.country }}{% endif %}</p>
+      <p class="temp">{{ weather.temp }}°C</p>
+      <p class="cond">{{ weather.condition }}</p>
+      <p class="meta">Feels {{ weather.feels_like }}° · Humidity {{ weather.humidity }}% · Wind {{ weather.wind_speed }} m/s</p>
+      <p class="source">Source: <strong>{{ weather.source }}</strong>
+        {% if weather.demo_note %}<span class="note">{{ weather.demo_note }}</span>{% endif %}
+      </p>
+    </div>
+    {% if weather.icon_url %}
+    <img class="wx-icon" src="{{ weather.icon_url }}" alt="" width="100" height="100">
+    {% endif %}
+  </div>
+
+  {% if weather.forecast %}
+  <div class="forecast">
+    {% for day in weather.forecast %}
+    <article class="day">
+      <p class="d-label">{{ day.day }}</p>
+      <img src="https://openweathermap.org/img/wn/{{ day.icon }}.png" alt="" width="48" height="48">
+      <p class="d-temp">{{ day.temp }}°</p>
+      <p class="d-cond">{{ day.condition }}</p>
+    </article>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if advice %}
+  <aside class="advice">
+    <div class="advice-head">
+      <h2>Advisor</h2>
+      <span class="mode-pill">{{ advice_mode }}</span>
+    </div>
+    <p>{{ advice }}</p>
+  </aside>
+  {% endif %}
+</section>
+{% endif %}
+
+<section class="api-docs">
+  <h2>API endpoints</h2>
+  <p>Same integrations your UI uses — ready to plug into mobile clients or agents.</p>
+  <pre><code>GET  /api/weather/?city=London
+GET  /api/advice/?city=Mumbai
+POST /api/advice/  {"city":"Tokyo"}</code></pre>
+</section>
+
+{% if recent %}
+<section class="recent">
+  <h2>Recent lookups</h2>
+  <ul>
+    {% for r in recent %}
+    <li>
+      <a href="?city={{ r.query|urlencode }}">{{ r.resolved_name|default:r.query }}</a>
+      <span>{{ r.temp_c }}° · {{ r.condition }} · {{ r.source }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}
