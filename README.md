@@ -10,6 +10,8 @@ Clone it, migrate, run — demo data works immediately. Drop in API keys when yo
 [![OpenAI](https://img.shields.io/badge/AI-OpenAI%20optional-412991?logo=openai&logoColor=white)](https://platform.openai.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+![Skycast weather result for London](docs/skycast-result.png)
+
 ---
 
 ## What it does
@@ -245,15 +247,13 @@ django-weather-api/
 
 ## Screenshots
 
-> After `runserver`, capture the home hero, a city result (weather + advisor), and optionally a JSON response in the browser or Postman. Drop images into a `docs/` folder and link them here, for example:
->
-> `![Skycast UI](docs/skycast-ui.png)`
+### Result — weather, 5-day forecast, rules advisor
 
-Suggested shots for GitHub / resume:
+![Skycast city result](docs/skycast-result.png)
 
-1. Hero + city search  
-2. Result card with forecast strip and advisor (`rules` or `openai` pill)  
-3. `/api/weather/?city=...` JSON in the browser  
+### Home — search, quick cities, API endpoints
+
+![Skycast home](docs/skycast-home.png)
 
 ---
 
